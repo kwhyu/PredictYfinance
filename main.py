@@ -10,6 +10,11 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import seaborn as sns
 from datetime import datetime
 
+import subprocess
+import sys
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance", "streamlit"])
+
 # Load stock data
 @st.cache_data
 def load_stock_data(ticker, period="5y"):
