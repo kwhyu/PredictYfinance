@@ -1,3 +1,12 @@
+import subprocess
+import sys
+
+subprocess.check_call([sys.executable, "pip", "install", "--upgrade", "pip"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "streamlit"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "seaborn"])
+
 import streamlit as st
 import pandas as pd
 import yfinance as yf
@@ -9,13 +18,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import seaborn as sns
 from datetime import datetime
-
-import subprocess
-import sys
-
-subprocess.check_call([sys.executable, "pip", "install", "--upgrade", "pip"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "streamlit"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
 
 # Load stock data
 @st.cache_data
