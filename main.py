@@ -13,7 +13,9 @@ from datetime import datetime
 import subprocess
 import sys
 
-subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance", "streamlit"])
+subprocess.check_call([sys.executable, "pip", "install", "--upgrade", "pip"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "streamlit"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
 
 # Load stock data
 @st.cache_data
