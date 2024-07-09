@@ -1,6 +1,6 @@
 import streamlit as st
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
@@ -8,9 +8,10 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import seaborn as sns
+from datetime import datetime
 
 # Load stock data
-@st.cache
+@st.cache_data
 def load_stock_data(ticker, period="5y"):
     stock = yf.Ticker(ticker)
     df_stock = stock.history(period=period)
@@ -67,42 +68,32 @@ def predict_future_price(day, month, year):
 
 st.title("NVIDIA Stock Price Prediction")
 
-day = st.number_input("Day", min_value=1, max_value=31, value=1)
-month = st.number_input("Month", min_value=1, max_value=12, value=1)
-year = st.number_input("Year", min_value=2000, max_value=2023, value=2023)
-
-if st.button("Predict"):
-    predictions = predict_future_price(day, month, year)
-    st.write(f"Predicted stock prices for {day}-{month}-{year}:")
-    st.write(f"SVM Prediction: {predictions['SVM_Prediction']}")
-    st.write(f"KNN Prediction: {predictions['KNN_Prediction']}")
-    st.write(f"RF Prediction: {predictions['RF_Prediction']}")
-
-# Evaluate models
 svm_mae, svm_mse, svm_r2 = evaluate_model(svm_model, X_test_scaled, y_test)
 knn_mae, knn_mse, knn_r2 = evaluate_model(knn_model, X_test_scaled, y_test)
 rf_mae, rf_mse, rf_r2 = evaluate_model(rf_model, X_test_scaled, y_test)
 
+model_evaluation = {
+    "Model": ["SVM", "KNN", "Random Forest"],
+    "Mean Absolute Error": [svm_mae, knn_mae, rf_mae],
+    "Mean Squared Error": [svm_mse, knn_mse, rf_mse],
+    "R² Score": [svm_r2, knn_r2, rf_r2]
+}
+
+df_evaluation = pd.DataFrame(model_evaluation)
+
 st.write("### Model Evaluation")
-st.write("#### SVM Model")
-st.write(f"Mean Absolute Error: {svm_mae}")
-st.write(f"Mean Squared Error: {svm_mse}")
-st.write(f"R² Score: {svm_r2}")
+st.table(df_evaluation)
 
-st.write("#### KNN Model")
-st.write(f"Mean Absolute Error: {knn_mae}")
-st.write(f"Mean Squared Error: {knn_mse}")
-st.write(f"R² Score: {knn_r2}")
+# Date input
+date_input = st.date_input("Select Date", min_value=datetime(1999, 1, 22), value=datetime.now())
 
-st.write("#### Random Forest Model")
-st.write(f"Mean Absolute Error: {rf_mae}")
-st.write(f"Mean Squared Error: {rf_mse}")
-st.write(f"R² Score: {rf_r2}")
+day = date_input.day
+month = date_input.month
+year = date_input.year
 
-# Correlation heatmap
-st.write("### Correlation Heatmap")
-st.write(sns.heatmap(df_stock.corr(), annot=True, cmap='coolwarm'))
-
-# Show stock data
-st.write("### Stock Data")
-st.write(df_stock.head())
+if st.button("Predict"):
+    predictions = predict_future_price(day, month, year)
+    st.write(f"Predicted stock prices for {day}-{month}-{year}:")
+    st.write(f"SVM Prediction: {predictions['SVM_Prediction']:.2f}")
+    st.write(f"KNN Prediction: {predictions['KNN_Prediction']:.2f}")
+    st.write(f"RF Prediction: {predictions['RF_Prediction']:.2f}")
