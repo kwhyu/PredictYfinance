@@ -1,11 +1,7 @@
 import subprocess
 import sys
-
-subprocess.check_call([sys.executable, "pip", "install", "--upgrade", "pip"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "streamlit"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "pandas"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "seaborn"])
 
 import streamlit as st
 import pandas as pd
