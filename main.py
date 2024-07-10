@@ -80,7 +80,7 @@ rf_r2 = evaluate_model(rf_model, X_test_scaled, y_test)
 
 model_evaluation = {
     "Model": ["SVM", "KNN", "Random Forest"],
-    "Accuracy": [f"{round(svm_r2, 1)}%", f"{round(knn_r2, 1)}%", f"{round(rf_r2, 1)}%"]
+    "Accuracy": [f"{svm_r2:.1%}", f"{knn_r2:.1%}", f"{rf_r2:.1%}"]
 }
 
 df_evaluation = pd.DataFrame(model_evaluation)
