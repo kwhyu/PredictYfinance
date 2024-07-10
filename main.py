@@ -55,10 +55,8 @@ rf_model.fit(X_train_scaled, y_train)
 
 def evaluate_model(model, X_test, y_test):
     predictions = model.predict(X_test)
-    mae = mean_absolute_error(y_test, predictions)
-    mse = mean_squared_error(y_test, predictions)
     r2 = r2_score(y_test, predictions)
-    return mae, mse, r2
+    return r2
 
 def predict_future_price(day, month, year):
     input_features = pd.DataFrame([[day, month, year]], columns=features)
@@ -74,15 +72,15 @@ def predict_future_price(day, month, year):
         'RF_Prediction': rf_prediction,
     }
 
-st.title("Nvidia Stock Prediction")
+st.title("NVIDIA Stock Price Prediction")
 
-svm_mae, svm_mse, svm_r2 = evaluate_model(svm_model, X_test_scaled, y_test)
-knn_mae, knn_mse, knn_r2 = evaluate_model(knn_model, X_test_scaled, y_test)
-rf_mae, rf_mse, rf_r2 = evaluate_model(rf_model, X_test_scaled, y_test)
+svm_r2 = evaluate_model(svm_model, X_test_scaled, y_test)
+knn_r2 = evaluate_model(knn_model, X_test_scaled, y_test)
+rf_r2 = evaluate_model(rf_model, X_test_scaled, y_test)
 
 model_evaluation = {
     "Model": ["SVM", "KNN", "Random Forest"],
-    "Accuracy": [f"{round((svm_r2 - 1) * 100, 2)}%", f"{round((knn_r2 - 1) * 100, 2)}%", f"{round((rf_r2 - 1) * 100, 2)}%"]
+    "Accuracy": [f"{round(svm_r2, 1)}%", f"{round(knn_r2, 1)}%", f"{round(rf_r2, 1)}%"]
 }
 
 df_evaluation = pd.DataFrame(model_evaluation)
