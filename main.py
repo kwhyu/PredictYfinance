@@ -74,7 +74,7 @@ def predict_future_price(day, month, year):
         'RF_Prediction': rf_prediction,
     }
 
-st.title("NVIDIA Stock Price Prediction")
+st.title("Nvidia Stock Prediction")
 
 svm_mae, svm_mse, svm_r2 = evaluate_model(svm_model, X_test_scaled, y_test)
 knn_mae, knn_mse, knn_r2 = evaluate_model(knn_model, X_test_scaled, y_test)
@@ -82,9 +82,7 @@ rf_mae, rf_mse, rf_r2 = evaluate_model(rf_model, X_test_scaled, y_test)
 
 model_evaluation = {
     "Model": ["SVM", "KNN", "Random Forest"],
-    "Mean Absolute Error": [svm_mae, knn_mae, rf_mae],
-    "Mean Squared Error": [svm_mse, knn_mse, rf_mse],
-    "R² Score": [svm_r2, knn_r2, rf_r2]
+    "Accuracy": [f"{round((svm_r2 - 1) * 100, 2)}%", f"{round((knn_r2 - 1) * 100, 2)}%", f"{round((rf_r2 - 1) * 100, 2)}%"]
 }
 
 df_evaluation = pd.DataFrame(model_evaluation)
