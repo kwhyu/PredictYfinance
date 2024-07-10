@@ -101,3 +101,10 @@ if st.button("Predict"):
     st.write(f"SVM Prediction: {predictions['SVM_Prediction']:.2f}")
     st.write(f"KNN Prediction: {predictions['KNN_Prediction']:.2f}")
     st.write(f"RF Prediction: {predictions['RF_Prediction']:.2f}")
+
+
+
+filtered_df = df_stock[df_stock['Year'] == year]
+
+st.write("### Chart NVDIA Stock {year}")
+st.line_chart(filtered_df.set_index('Date')['Close'])
