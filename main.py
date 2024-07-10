@@ -72,7 +72,7 @@ def predict_future_price(day, month, year):
         'RF_Prediction': rf_prediction,
     }
 
-st.title("NVIDIA Stock Prediction")
+st.title("NVIDIA Stock Price Prediction")
 
 svm_r2 = evaluate_model(svm_model, X_test_scaled, y_test)
 knn_r2 = evaluate_model(knn_model, X_test_scaled, y_test)
@@ -88,6 +88,16 @@ df_evaluation = pd.DataFrame(model_evaluation)
 st.write("### Model Evaluation")
 st.table(df_evaluation)
 
+# Filter data based on the selected year
+filtered_df = df_stock[df_stock['Year'] == year]
+
+# Plot line chart or show a message if data is not available
+st.write(f"### NVIDIA Stock Prices for {year}")
+if not filtered_df.empty:
+    st.line_chart(filtered_df.set_index('Date')['Close'])
+else:
+    st.write(f"Line chart not available for {year}")
+
 # Date input
 date_input = st.date_input("Select Date", min_value=datetime(1999, 1, 22), value=datetime.now())
 
@@ -101,7 +111,3 @@ if st.button("Predict"):
     st.write(f"SVM Prediction: {predictions['SVM_Prediction']:.2f}USD")
     st.write(f"KNN Prediction: {predictions['KNN_Prediction']:.2f}USD")
     st.write(f"RF Prediction: {predictions['RF_Prediction']:.2f}USD")
-    
-filtered_df = df_stock[df_stock['Year'] == year]
-st.write(f"### NVIDIA Stock {year}")
-st.line_chart(filtered_df.set_index('Date')['Close'])
