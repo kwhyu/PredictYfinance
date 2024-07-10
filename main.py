@@ -98,9 +98,9 @@ year = date_input.year
 if st.button("Predict"):
     predictions = predict_future_price(day, month, year)
     st.write(f"Predicted stock prices for {day}-{month}-{year}:")
-    st.write(f"SVM Prediction: {predictions['SVM_Prediction']:.2f}USD")
-    st.write(f"KNN Prediction: {predictions['KNN_Prediction']:.2f}USD")
-    st.write(f"RF Prediction: {predictions['RF_Prediction']:.2f}USD")
+    st.write(f"SVM Prediction: {predictions['SVM_Prediction']:.2f} USD")
+    st.write(f"KNN Prediction: {predictions['KNN_Prediction']:.2f} USD")
+    st.write(f"RF Prediction: {predictions['RF_Prediction']:.2f} USD")
 
 # Filter data based on the selected year
 filtered_df = df_stock[df_stock['Year'] == year]
